@@ -29,7 +29,7 @@
                             @enderror
                         </div>
                         <!-- col-end -->
-                        <a href="{{route('customer.forgot.password')}}" class="forget-link"><i class="fa-solid fa-unlock"></i> পাসওয়ার্ড ভুলে গেছেন?</a>
+                        <a href="#" class="forget-link"><i class="fa-solid fa-unlock"></i> পাসওয়ার্ড ভুলে গেছেন?</a>
                         <div class="form-group mb-3">
                             <button class="submit-btn"> লগিন </button>
                         </div>

@@ -37,12 +37,12 @@ class BannerController extends Controller
         $this->validate($request, [
             'link' => 'required',
             'status' => 'required',
-            'image' => 'required', // ইমেজ রিকোয়ার্ড রাখা ভালো
+            'image' => 'required',
         ]);
 
         $file = $request->file('image');
-        $name = time() . '-' . str_replace(' ', '-', $file->getClientOriginalName()); // নাম ক্লিন করা হলো
-        $uploadPath = 'uploads/banner/'; // এখানে 'public/' নেই, এটি সঠিক
+        $name = time() . '-' . str_replace(' ', '-', $file->getClientOriginalName()); 
+        $uploadPath = 'uploads/banner/'; 
 
         // public_path ব্যবহার করে ছবি মুভ করা
         $file->move(public_path($uploadPath), $name);
@@ -50,7 +50,7 @@ class BannerController extends Controller
 
         $input = $request->all();
         $input['status'] = $request->status ? 1 : 0;
-        $input['image'] = $fileUrl; // ডাটাবেসে 'uploads/banner/filename.jpg' সেভ হবে
+        $input['image'] = $fileUrl; 
 
         Banner::create($input);
 
@@ -76,14 +76,12 @@ class BannerController extends Controller
         $image = $request->file('image');
 
         if ($image) {
-            // নতুন ছবি আপলোড
             $name = time() . '-' . str_replace(' ', '-', $image->getClientOriginalName());
             $uploadPath = 'uploads/banner/';
             $image->move(public_path($uploadPath), $name);
             $fileUrl = $uploadPath . $name;
             $input['image'] = $fileUrl;
 
-            // পুরনো ছবি থাকলে তা ডিলিট করা (যদি পাথ সঠিক থাকে)
             if (File::exists(public_path($update_data->image))) {
                 File::delete(public_path($update_data->image));
             }
@@ -120,7 +118,6 @@ class BannerController extends Controller
     {
         $delete_data = Banner::find($request->hidden_id);
 
-        // ডিলিট করার আগে ছবিও ডিলিট করা ভালো
         if (File::exists(public_path($delete_data->image))) {
             File::delete(public_path($delete_data->image));
         }

@@ -39,18 +39,15 @@ class CategoryController extends Controller
             'status' => 'required',
         ]);
 
-        // ইমেজ প্রসেসিং
         $image = $request->file('image');
         if ($image) {
             $name =  time() . '-' . $image->getClientOriginalName();
             $name = preg_replace('"\.(jpg|jpeg|png|webp)$"', '.webp', $name);
             $name = strtolower(preg_replace('/\s+/', '-', $name));
 
-            // সঠিক পাথ (public/ শব্দটা বাদ দেওয়া হয়েছে)
             $uploadpath = 'uploads/category/';
             $imageUrl = $uploadpath . $name;
 
-            // ফোল্ডার না থাকলে তৈরি করা
             if (!File::isDirectory(public_path($uploadpath))) {
                 File::makeDirectory(public_path($uploadpath), 0777, true, true);
             }
@@ -61,7 +58,7 @@ class CategoryController extends Controller
             $width = null;
             $height = null;
             if ($img->width() > $img->height()) {
-                $width = 400; // আপনি চাইলে এখানে ফিক্সড উইডথ দিতে পারেন
+                $width = 400; 
             } else {
                 $height = 400;
             }
@@ -71,7 +68,6 @@ class CategoryController extends Controller
                 $constraint->upsize();
             });
 
-            // public_path() ব্যবহার করে সেভ করা
             $img->save(public_path($imageUrl));
         } else {
             $imageUrl = null;
@@ -83,7 +79,7 @@ class CategoryController extends Controller
 
         $input['parent_id'] = $request->parent_id ? $request->parent_id : 0;
         $input['front_view'] = $request->front_view ? 1 : 0;
-        $input['image'] = $imageUrl; // ডাটাবেসে জমা হবে 'uploads/category/filename.webp'
+        $input['image'] = $imageUrl; 
 
         Category::create($input);
 
@@ -109,7 +105,6 @@ class CategoryController extends Controller
         $image = $request->file('image');
 
         if ($image) {
-            // নতুন ইমেজ প্রসেসিং
             $name =  time() . '-' . $image->getClientOriginalName();
             $name = preg_replace('"\.(jpg|jpeg|png|webp)$"', '.webp', $name);
             $name = strtolower(preg_replace('/\s+/', '-', $name));
@@ -127,7 +122,6 @@ class CategoryController extends Controller
 
             $img->save(public_path($imageUrl));
 
-            // পুরনো ফাইল ডিলিট করা (যদি থাকে)
             if ($update_data->image && File::exists(public_path($update_data->image))) {
                 File::delete(public_path($update_data->image));
             }
@@ -172,7 +166,6 @@ class CategoryController extends Controller
     {
         $delete_data = Category::find($request->hidden_id);
 
-        // ছবিসহ ডিলিট করা
         if ($delete_data->image && File::exists(public_path($delete_data->image))) {
             File::delete(public_path($delete_data->image));
         }

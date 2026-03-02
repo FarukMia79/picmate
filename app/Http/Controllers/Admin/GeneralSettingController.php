@@ -42,7 +42,6 @@ class GeneralSettingController extends Controller
         ]);
 
         $uploadPath = 'uploads/settings/';
-        // ফোল্ডার না থাকলে তৈরি করা
         if (!File::isDirectory(public_path($uploadPath))) {
             File::makeDirectory(public_path($uploadPath), 0777, true, true);
         }
@@ -170,7 +169,6 @@ class GeneralSettingController extends Controller
     {
         $delete_data = GeneralSetting::find($request->hidden_id);
 
-        // ফাইলগুলো ডিলিট করা
         if ($delete_data->white_logo) File::delete(public_path($delete_data->white_logo));
         if ($delete_data->dark_logo) File::delete(public_path($delete_data->dark_logo));
         if ($delete_data->favicon) File::delete(public_path($delete_data->favicon));

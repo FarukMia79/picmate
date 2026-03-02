@@ -7,9 +7,6 @@ use Illuminate\Http\Request;
 use App\Models\Childcategory;
 use App\Models\Subcategory;
 use Toastr;
-use Image;
-use File;
-use Str;
 use DB;
 
 class ChildcategoryController extends Controller

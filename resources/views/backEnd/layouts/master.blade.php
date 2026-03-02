@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <!-- App favicon -->
-    <link rel="shortcut icon" href="{{asset($generalsetting->favicon)}}" />
+    <link rel="shortcut icon" href="#" />
 
     <!-- Bootstrap css -->
     <link href="{{asset('backEnd/')}}/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
@@ -43,23 +43,17 @@
               </div>
             </li>
 
-            <li class="dropdown d-none d-lg-inline-block">
-              <a class="nav-link dropdown-toggle arrow-none waves-effect waves-light" data-toggle="fullscreen" href="#">
-                <i class="fe-maximize noti-icon"></i>
-              </a>
-            </li>
-
             <li class="dropdown notification-list topbar-dropdown">
               <a class="nav-link dropdown-toggle waves-effect waves-light" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
                 <i class="fe-bell noti-icon"></i>
-                <span class="badge bg-danger rounded-circle noti-icon-badge">{{$neworder}}</span>
+                <span class="badge bg-danger rounded-circle noti-icon-badge">6</span>
               </a>
               <div class="dropdown-menu dropdown-menu-end dropdown-lg">
                 <!-- item-->
                 <div class="dropdown-item noti-title">
                   <h5 class="m-0">
                     <span class="float-end">
-                      <a href="{{route('admin.orders',['slug'=>'pending'])}}" class="text-dark">
+                      <a href="#" class="text-dark">
                         <small>View All</small>
                       </a>
                     </span>
@@ -68,24 +62,22 @@
                 </div>
 
                 <div class="noti-scroll" data-simplebar>
-                  @foreach($pendingorder as $porder)
                   <!-- item-->
-                  <a href="{{route('admin.orders',['slug'=>'pending'])}}" class="dropdown-item notify-item active">
+                  <a href="#" class="dropdown-item notify-item active">
                     <div class="notify-icon">
-                      <img src="{{asset($porder->customer?$porder->customer->image:'')}}" class="img-fluid rounded-circle" alt="" />
+                      <img src="" class="img-fluid rounded-circle" alt="" />
                     </div>
-                    <p class="notify-details">{{$porder->customer?$porder->customer->name:''}}</p>
+                    <p class="notify-details">Md. Faruk</p>
                     <p class="text-muted mb-0 user-msg">
-                      <small>Invoice : {{$porder->invoice_id}}</small>
+                      <small>Invoice : 42759</small>
                     </p>
                   </a>
-                  @endforeach
 
                   <!-- item-->
                 </div>
 
                 <!-- All-->
-                <a href="{{route('admin.orders',['slug'=>'pending'])}}" class="dropdown-item text-center text-primary notify-item notify-all">
+                <a href="#" class="dropdown-item text-center text-primary notify-item notify-all">
                   View all
                   <i class="fe-arrow-right"></i>
                 </a>
@@ -110,15 +102,9 @@
                 </a>
 
                 <!-- item-->
-                <a href="{{route('change_password')}}" class="dropdown-item notify-item">
+                <a href="#" class="dropdown-item notify-item">
                   <i class="fe-settings"></i>
                   <span>Change Password</span>
-                </a>
-
-                <!-- item-->
-                <a href="{{route('locked')}}" class="dropdown-item notify-item">
-                  <i class="fe-lock"></i>
-                  <span>Lock Screen</span>
                 </a>
 
                 <div class="dropdown-divider"></div>
@@ -200,48 +186,6 @@
       <!-- ========== Left Sidebar Start ========== -->
       <div class="left-side-menu">
         <div class="h-100" data-simplebar>
-          <!-- User box -->
-          <div class="user-box text-center">
-            <img src="{{asset('public/backEnd/')}}/assets/images/users/user-1.jpg" alt="user-img" title="Mat Helme" class="rounded-circle avatar-md" />
-            <div class="dropdown">
-              <a href="javascript: void(0);" class="text-dark dropdown-toggle h5 mt-2 mb-1 d-block" data-bs-toggle="dropdown">{{Auth::user()->name}}</a>
-              <div class="dropdown-menu user-pro-dropdown">
-                <!-- item-->
-                <a href="javascript:void(0);" class="dropdown-item notify-item">
-                  <i class="fe-user me-1"></i>
-                  <span>My Account</span>
-                </a>
-
-                <!-- item-->
-                <a href="javascript:void(0);" class="dropdown-item notify-item">
-                  <i class="fe-settings me-1"></i>
-                  <span>Settings</span>
-                </a>
-
-                <!-- item-->
-                <a href="javascript:void(0);" class="dropdown-item notify-item">
-                  <i class="fe-lock me-1"></i>
-                  <span>Lock Screen</span>
-                </a>
-
-                <!-- item-->
-                <a
-                  href="{{ route('logout') }}"
-                  onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();"
-                  class="dropdown-item notify-item"
-                >
-                  <i class="fe-log-out me-1"></i>
-                  <span>Logout</span>
-                </a>
-                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                  @csrf
-                </form>
-              </div>
-            </div>
-            <p class="text-muted">Admin Head</p>
-          </div>
-
           <!--- Sidemenu -->
           <div id="sidebar-menu">
             <ul id="side-menu">
@@ -261,13 +205,8 @@
                 <div class="collapse" id="sidebar-orders">
                   <ul class="nav-second-level">
                     <li>
-                      <a href="{{route('admin.orders',['slug'=>'all'])}}"><i data-feather="file-plus"></i> All Order</a>
+                      <a href="#"><i data-feather="file-plus"></i> All Order</a>
                     </li>
-                    @foreach($orderstatus as $value)
-                    <li>
-                      <a href="{{route('admin.orders',['slug'=>$value->slug])}}"><i data-feather="file-plus"></i>{{$value->name}}</a>
-                    </li>
-                    @endforeach
                   </ul>
                 </div>
               </li>
@@ -310,9 +249,7 @@
                 </div>
               </li>
               <!-- nav items end -->
-              @php
-                $pending_reviews = \App\Models\Review::where('status', 'pending')->count();
-              @endphp
+
               <li>
                 <a href="#sidebar-product-review" data-bs-toggle="collapse">
                   <i data-feather="star"></i>
@@ -322,32 +259,13 @@
                 <div class="collapse" id="sidebar-product-review">
                   <ul class="nav-second-level">                   
                     <li>
-                      <a href="{{route('reviews.pending')}}"><i data-feather="file-plus"></i> Pending Reviews ({{ $pending_reviews }})</a>
+                      <a href="#"><i data-feather="file-plus"></i> Pending Reviews</a>
                     </li>
                     <li>
-                      <a href="{{route('reviews.pending')}}"><i data-feather="file-plus"></i> Create</a>
+                      <a href="#"><i data-feather="file-plus"></i> Create</a>
                     </li>
                     <li>
-                      <a href="{{route('reviews.index')}}"><i data-feather="file-plus"></i> All Reviews</a>
-                    </li>
-                  </ul>
-                </div>
-              </li>
-              <!-- nav items end -->
-              <li>
-                <a href="#sidebar-landing-page" data-bs-toggle="collapse">
-                  <i data-feather="airplay"></i>
-                  <span> Landing Page </span>
-                  <span class="menu-arrow"></span>
-                </a>
-                <div class="collapse" id="sidebar-landing-page">
-                  <ul class="nav-second-level">                   
-                    
-                    <li>
-                      <a href="{{route('campaign.create')}}"><i data-feather="file-plus"></i> Create</a>
-                    </li>
-                    <li>
-                      <a href="{{route('campaign.index')}}"><i data-feather="file-plus"></i> Campaign</a>
+                      <a href="#"><i data-feather="file-plus"></i> All Reviews</a>
                     </li>
                   </ul>
                 </div>
@@ -363,16 +281,10 @@
                 <div class="collapse" id="sidebar-users">
                   <ul class="nav-second-level">
                     <li>
-                      <a href="{{route('users.index')}}"><i data-feather="file-plus"></i> User</a>
+                      <a href="#"><i data-feather="file-plus"></i> User</a>
                     </li>
                     <li>
-                      <a href="{{route('roles.index')}}"><i data-feather="file-plus"></i> Roles</a>
-                    </li>
-                    <li>
-                      <a href="{{route('permissions.index')}}"><i data-feather="file-plus"></i> Permissions</a>
-                    </li>
-                    <li>
-                      <a href="{{route('customers.index')}}"><i data-feather="file-plus"></i> Customers</a>
+                      <a href="#"><i data-feather="file-plus"></i> Customers</a>
                     </li>
                   </ul>
                 </div>
@@ -390,61 +302,13 @@
                       <a href="{{route('settings.index')}}"><i data-feather="file-plus"></i> General Setting</a>
                     </li>
                     <li>
-                      <a href="{{route('pixels.index')}}"><i data-feather="file-plus"></i> Pixels Setting</a>
+                      <a href="#"><i data-feather="file-plus"></i> Contact</a>
                     </li>
                     <li>
-                      <a href="{{route('socialmedias.index')}}"><i data-feather="file-plus"></i> Social Media</a>
+                      <a href="#"><i data-feather="file-plus"></i> Shipping Charge</a>
                     </li>
                     <li>
-                      <a href="{{route('contact.index')}}"><i data-feather="file-plus"></i> Contact</a>
-                    </li>
-                    <li>
-                      <a href="{{route('pages.index')}}"><i data-feather="file-plus"></i> Create Page</a>
-                    </li>
-                    <li>
-                      <a href="{{route('shippingcharges.index')}}"><i data-feather="file-plus"></i> Shipping Charge</a>
-                    </li>
-                    <li>
-                      <a href="{{route('orderstatus.index')}}"><i data-feather="file-plus"></i> Order Status</a>
-                    </li>
-                  </ul>
-                </div>
-              </li>
-              <!-- nav items end -->
-              <li>
-                <a href="#sidebar-api-integration" data-bs-toggle="collapse">
-                  <i data-feather="save"></i>
-                  <span> API Integration </span>
-                  <span class="menu-arrow"></span>
-                </a>
-                <div class="collapse" id="sidebar-api-integration">
-                  <ul class="nav-second-level">                   
-                    <li>
-                      <a href="{{route('paymentgeteway.manage')}}"><i data-feather="file-plus"></i> Payment Gateway</a>
-                    </li>
-                    <li>
-                      <a href="{{route('smsgeteway.manage')}}"><i data-feather="file-plus"></i> SMS Gateway</a>
-                    </li>
-                    <li>
-                      <a href="{{route('courierapi.manage')}}"><i data-feather="file-plus"></i> Courier API</a>
-                    </li>
-                  </ul>
-                </div>
-              </li>
-              <!-- nav items end -->
-              <li>
-                <a href="#sidebar-pixel-gtm" data-bs-toggle="collapse">
-                  <i data-feather="save"></i>
-                  <span> G. Pixel and GTM </span>
-                  <span class="menu-arrow"></span>
-                </a>
-                <div class="collapse" id="sidebar-pixel-gtm">
-                  <ul class="nav-second-level">                   
-                    <li>
-                      <a href="{{route('tagmanagers.index')}}"><i data-feather="file-plus"></i> Tag Manager</a>
-                    </li>
-                    <li>
-                      <a href="{{route('pixels.index')}}"><i data-feather="file-plus"></i> Pixel Manage</a>
+                      <a href="#"><i data-feather="file-plus"></i> Order Status</a>
                     </li>
                   </ul>
                 </div>
@@ -463,27 +327,6 @@
                     </li>
                     <li>
                       <a href="{{route('banners.index')}}"><i data-feather="file-plus"></i> Banner & Ads</a>
-                    </li>
-                  </ul>
-                </div>
-              </li>
-              <!-- nav items end -->
-              <li>
-                <a href="#sitebar-report" data-bs-toggle="collapse">
-                  <i data-feather="pie-chart"></i>
-                  <span> Reports </span>
-                  <span class="menu-arrow"></span>
-                </a>
-                <div class="collapse" id="sitebar-report">
-                  <ul class="nav-second-level">
-                    <li>
-                      <a href="{{route('admin.stock_report')}}"><i data-feather="file-plus"></i> Stock Report</a>
-                    </li>
-                    <li>
-                      <a href="{{route('customers.ip_block')}}"><i data-feather="file-plus"></i> IP Block</a>
-                    </li>
-                    <li>
-                      <a href="{{route('admin.order_report')}}"><i data-feather="file-plus"></i> Order Reports</a>
                     </li>
                   </ul>
                 </div>
@@ -509,7 +352,7 @@
         <footer class="footer">
           <div class="container-fluid">
             <div class="row">
-              <div class="col-md-12 text-end">&copy; {{$generalsetting->name}} <a href="https://wa.me/8801738154732" target="_blank">Z5Tech</a></div>
+              <div class="col-md-12 text-end">&copy; {{$generalsetting->name}} <a href="https://wa.me/8801790647979" target="_blank">Faruk</a></div>
             </div>
           </div>
         </footer>
@@ -597,28 +440,7 @@
                 <label class="form-check-label" for="scrollable-check">Scrollable</label>
               </div>
 
-              <!-- Left Sidebar-->
-              <h6 class="fw-medium font-14 mt-4 mb-2 pb-1">Left Sidebar Color</h6>
-
-              <div class="form-check form-switch mb-1">
-                <input type="checkbox" class="form-check-input" name="leftbar-color" value="light" id="light-check" />
-                <label class="form-check-label" for="light-check">Light</label>
-              </div>
-
-              <div class="form-check form-switch mb-1">
-                <input type="checkbox" class="form-check-input" name="leftbar-color" value="dark" id="dark-check" checked />
-                <label class="form-check-label" for="dark-check">Dark</label>
-              </div>
-
-              <div class="form-check form-switch mb-1">
-                <input type="checkbox" class="form-check-input" name="leftbar-color" value="brand" id="brand-check" />
-                <label class="form-check-label" for="brand-check">Brand</label>
-              </div>
-
-              <div class="form-check form-switch mb-3">
-                <input type="checkbox" class="form-check-input" name="leftbar-color" value="gradient" id="gradient-check" />
-                <label class="form-check-label" for="gradient-check">Gradient</label>
-              </div>
+              
 
               <!-- size -->
               <h6 class="fw-medium font-14 mt-4 mb-2 pb-1">Left Sidebar Size</h6>
@@ -712,63 +534,6 @@
           }
         });
       });
-    </script>
-    <!--patho courier-->
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $('.pathaocity').change(function() {
-                var id = $(this).val();
-                if (id) {
-                    $.ajax({
-                        type: "GET",
-                        url: "{{ url('admin/pathao-city') }}?city_id=" + id,
-                        success: function(res) {
-                            if (res && res.data && res.data.data) {
-                                $(".pathaozone").empty();
-                                $(".pathaozone").append('<option value="">Select..</option>');
-                                $.each(res.data.data, function(index, zone) {
-                                    $(".pathaozone").append('<option value="' + zone.zone_id + '">' + zone.zone_name + '</option>');
-                                    $('.pathaozone').trigger("chosen:updated");
-                                });
-                            } else {
-                                 $(".pathaoarea").empty();
-                                $(".pathaozone").empty();
-                            }
-                        }
-                    });
-                } else {
-                     $(".pathaoarea").empty();
-                    $(".pathaozone").empty();
-                }
-            });
-        });
-    </script>
-    <script type="text/javascript"> 
-        $(document).ready(function() {
-            $('.pathaozone').change(function() {
-                var id = $(this).val();
-                if (id) {
-                    $.ajax({
-                        type: "GET",
-                        url: "{{ url('admin/pathao-zone') }}?zone_id=" + id,
-                        success: function(res) {
-                            if (res && res.data && res.data.data) {
-                                $(".pathaoarea").empty();
-                                $(".pathaoarea").append('<option value="">Select..</option>');
-                                $.each(res.data.data, function(index, area) {
-                                    $(".pathaoarea").append('<option value="' + area.area_id + '">' + area.area_name + '</option>');
-                                    $('.pathaoarea').trigger("chosen:updated");
-                                });
-                            } else {
-                                $(".pathaoarea").empty();
-                            }
-                        }
-                    });
-                } else {
-                    $(".pathaoarea").empty();
-                }
-            });
-        });
     </script>
     @yield('script')
   </body>

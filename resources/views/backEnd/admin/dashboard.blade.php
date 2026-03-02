@@ -34,7 +34,7 @@
                         </div>
                         <div class="col-6">
                             <div class="text-end">
-                                <h3 class="text-dark mt-1"><span data-plugin="counterup">{{$total_order}}</span></h3>
+                                <h3 class="text-dark mt-1"><span data-plugin="counterup">56</span></h3>
                                 <p class="text-muted mb-1 text-truncate">Total Oreder</p>
                             </div>
                         </div>
@@ -54,7 +54,7 @@
                         </div>
                         <div class="col-6">
                             <div class="text-end">
-                                <h3 class="text-dark mt-1"><span data-plugin="counterup">{{$today_order}}</span></h3>
+                                <h3 class="text-dark mt-1"><span data-plugin="counterup">6</span></h3>
                                 <p class="text-muted mb-1 text-truncate">Today's Order</p>
                             </div>
                         </div>
@@ -74,7 +74,7 @@
                         </div>
                         <div class="col-6">
                             <div class="text-end">
-                                <h3 class="text-dark mt-1"><span data-plugin="counterup">{{$total_product}}</span></h3>
+                                <h3 class="text-dark mt-1"><span data-plugin="counterup">24</span></h3>
                                 <p class="text-muted mb-1 text-truncate">Products</p>
                             </div>
                         </div>
@@ -94,7 +94,7 @@
                         </div>
                         <div class="col-6">
                             <div class="text-end">
-                                <h3 class="text-dark mt-1"><span data-plugin="counterup">{{$total_customer}}</span></h3>
+                                <h3 class="text-dark mt-1"><span data-plugin="counterup">254</span></h3>
                                 <p class="text-muted mb-1 text-truncate">Customer</p>
                             </div>
                         </div>
@@ -139,29 +139,27 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($latest_order as $order)
                                 <tr>
-                                    <td>{{$loop->iteration}}</td>
+                                    <td>1</td>
                                     <td style="width: 36px;">
-                                        <img src="{{asset($order->product?$order->product->image->image:'')}}" alt="contact-img" title="contact-img" class="rounded-circle avatar-sm" />
+                                        <img src="" alt="contact-img" title="contact-img" class="rounded-circle avatar-sm" />
                                     </td>
 
                                     <td>
-                                        {{$order->invoice_id}}
+                                        45923
                                     </td>
 
                                     <td>
-                                        {{$order->amount}}
+                                        735
                                     </td>
 
                                     <td>
-                                        {{$order->customer?$order->customer->name:''}}
+                                        Md. Faruk Mia
                                     </td>
                                     <td>
-                                        {{$order->order_status}}
+                                        1
                                     </td>
                                 </tr>
-                                @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -201,29 +199,27 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($latest_customer as $customer)
                                 <tr>
                                     <td>
-                                        <h5 class="m-0 fw-normal">{{$loop->iteration}}</h5>
+                                        <h5 class="m-0 fw-normal">1</h5>
                                     </td>
 
                                     <td>
-                                        {{$customer->name}}
+                                        Md. Mahabub Hasan
                                     </td>
 
                                     <td>
-                                        {{$customer->phone}}
+                                        01990150950
                                     </td>
 
                                     <td>
-                                        {{$customer->created_at->format('d-m-Y')}}
+                                        28-2-2026
                                     </td>
 
                                     <td>
-                                        {{$customer->status}}
+                                        1
                                     </td>
                                 </tr>
-                                @endforeach
                             </tbody>
                         </table>
                     </div> <!-- end .table-responsive-->
@@ -240,90 +236,4 @@
         <script src="{{asset('backEnd/')}}/assets/libs/flatpickr/flatpickr.min.js"></script>
         <script src="{{asset('backEnd/')}}/assets/libs/apexcharts/apexcharts.min.js"></script>
         <script src="{{asset('backEnd/')}}/assets/libs/selectize/js/standalone/selectize.min.js"></script>
-
-    <script>
-
-    var colors = ["#f1556c"],
-    dataColors = $("#total-revenue").data("colors");
-    dataColors && (colors = dataColors.split(","));
-    var options = {
-          
-          chart: {
-             height: 242,
-             type: "radialBar"
-          },
-          plotOptions: {
-             radialBar: {
-                hollow: {
-                   size: "65%"
-                }
-             }
-          },
-          colors: colors,
-          labels: ["Delivery"]
-       },
-        chart = new ApexCharts(document.querySelector("#total-revenue"), options);
-        chart.render();
-        colors = ["#1abc9c", "#4a81d4"];
-        (dataColors = $("#sales-analytics").data("colors")) && (colors = dataColors.split(","));
-        options = {
-           series: [{
-              name: "Revenue",
-              type: "column",
-              data: [@foreach($monthly_sale as $sale) {{$sale->amount}}, @endforeach]
-           }, {
-              name: "Sales",
-              type: "line",
-              data: [@foreach($monthly_sale as $sale) {{$sale->amount}}, @endforeach]
-           }],
-           chart: {
-              height: 378,
-              type: "line",
-           },
-           stroke: {
-              width: [2, 3]
-           },
-           plotOptions: {
-              bar: {
-                 columnWidth: "50%"
-              }
-           },
-           colors: colors,
-           dataLabels: {
-              enabled: !0,
-              enabledOnSeries: [1]
-           },
-           labels: [@foreach($monthly_sale as $sale) {{date('d', strtotime($sale->date))}} + '-' + {{date('m', strtotime($sale->date))}}+ '-' + {{date('Y', strtotime($sale->date))}}, @endforeach],
-           legend: {
-              offsetY: 7
-           },
-           grid: {
-              padding: {
-                 bottom: 20
-              }
-           },
-           fill: {
-              type: "gradient",
-              gradient: {
-                 shade: "light",
-                 type: "horizontal",
-                 shadeIntensity: .25,
-                 gradientToColors: void 0,
-                 inverseColors: !0,
-                 opacityFrom: .75,
-                 opacityTo: .75,
-                 stops: [0, 0, 0]
-              }
-           },
-           yaxis: [{
-              title: {
-                 text: "Net Revenue"
-              }
-           }]
-        };
-        (chart = new ApexCharts(document.querySelector("#sales-analytics"), options)).render(), $("#dash-daterange").flatpickr({
-           altInput: !0,
-           mode: "range",
-        });
-    </script>
 @endsection

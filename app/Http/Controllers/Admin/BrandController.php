@@ -29,18 +29,15 @@ class BrandController extends Controller
             'status' => 'required',
         ]);
 
-        // ইমেজ হ্যান্ডেলিং
         $image = $request->file('image');
         if ($image) {
             $name =  time() . '-' . $image->getClientOriginalName();
             $name = preg_replace('"\.(jpg|jpeg|png|webp)$"', '.webp', $name);
             $name = strtolower(preg_replace('/\s+/', '-', $name));
 
-            // লোকালহোস্ট এবং স্ট্যান্ডার্ড লারাভেলের জন্য পাথ
             $uploadpath = 'uploads/brand/';
             $imageUrl = $uploadpath . $name;
 
-            // ফোল্ডার না থাকলে তৈরি করা হবে
             if (!File::isDirectory(public_path($uploadpath))) {
                 File::makeDirectory(public_path($uploadpath), 0777, true, true);
             }
@@ -54,7 +51,6 @@ class BrandController extends Controller
                 $constraint->aspectRatio();
             });
 
-            // public_path() ব্যবহার করে সেভ করা হলো
             $img->save(public_path($imageUrl));
         } else {
             $imageUrl = NULL;
@@ -62,7 +58,7 @@ class BrandController extends Controller
 
         $input = $request->all();
         $input['slug'] = strtolower(preg_replace('/\s+/u', '-', trim($request->name)));
-        $input['image'] = $imageUrl; // ডাটাবেসে শুধু 'uploads/brand/...' সেভ হবে
+        $input['image'] = $imageUrl;
 
         Brand::create($input);
 
@@ -87,7 +83,6 @@ class BrandController extends Controller
         $image = $request->file('image');
 
         if ($image) {
-            // নতুন ছবি প্রসেসিং
             $name =  time() . '-' . $image->getClientOriginalName();
             $name = preg_replace('"\.(jpg|jpeg|png|webp)$"', '.webp', $name);
             $name = strtolower(preg_replace('/\s+/', '-', $name));
@@ -107,7 +102,6 @@ class BrandController extends Controller
             $img->save(public_path($imageUrl));
             $input['image'] = $imageUrl;
 
-            // পুরনো ছবি ডিলিট করা
             if (File::exists(public_path($update_data->image))) {
                 File::delete(public_path($update_data->image));
             }
@@ -144,7 +138,6 @@ class BrandController extends Controller
     {
         $delete_data = Brand::find($request->hidden_id);
 
-        // ফাইলসহ ডিলিট করা
         if (File::exists(public_path($delete_data->image))) {
             File::delete(public_path($delete_data->image));
         }

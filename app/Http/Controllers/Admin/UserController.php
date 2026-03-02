@@ -36,17 +36,14 @@ class UserController extends Controller
             'roles' => 'required'
         ]);
 
-        // ইমেজ হ্যান্ডেলিং
         $image = $request->file('image');
         if ($image) {
             $name = time() . '-' . str_replace(' ', '-', $image->getClientOriginalName());
             $name = preg_replace('"\.(jpg|jpeg|png|webp)$"', '.webp', $name);
 
-            // সঠিক পাথ (public/ সরানো হয়েছে)
             $uploadpath = 'uploads/users/';
             $imageUrl = $uploadpath . $name;
 
-            // ফোল্ডার না থাকলে তৈরি করা
             if (!File::isDirectory(public_path($uploadpath))) {
                 File::makeDirectory(public_path($uploadpath), 0777, true, true);
             }
@@ -57,7 +54,6 @@ class UserController extends Controller
                 $constraint->aspectRatio();
             });
 
-            // public_path() ব্যবহার করে সেভ
             $img->save(public_path($imageUrl));
         } else {
             $imageUrl = null;
@@ -65,7 +61,7 @@ class UserController extends Controller
 
         $input = $request->all();
         $input['password'] = Hash::make($input['password']);
-        $input['image'] = $imageUrl; // ডাটাবেসে সেভ হবে 'uploads/users/filename.webp'
+        $input['image'] = $imageUrl;
         $input['status'] = 1;
 
         $user = User::create($input);
@@ -94,14 +90,12 @@ class UserController extends Controller
         $update_data = User::find($request->hidden_id);
         $input = $request->all();
 
-        // পাসওয়ার্ড আপডেট
         if (!empty($input['password'])) {
             $input['password'] = Hash::make($input['password']);
         } else {
             $input = Arr::except($input, array('password'));
         }
 
-        // নতুন ইমেজ আপডেট
         $image = $request->file('image');
         if ($image) {
             $name = time() . '-' . str_replace(' ', '-', $image->getClientOriginalName());
@@ -118,7 +112,6 @@ class UserController extends Controller
 
             $img->save(public_path($imageUrl));
 
-            // পুরনো ইমেজ ডিলিট (যদি থাকে)
             if ($update_data->image && File::exists(public_path($update_data->image))) {
                 File::delete(public_path($update_data->image));
             }
@@ -131,7 +124,6 @@ class UserController extends Controller
         $input['status'] = $request->status ? 1 : 0;
         $update_data->update($input);
 
-        // রোল আপডেট
         DB::table('model_has_roles')->where('model_id', $request->hidden_id)->delete();
         $update_data->assignRole($request->input('roles'));
 
@@ -161,7 +153,6 @@ class UserController extends Controller
     {
         $delete_data = User::find($request->hidden_id);
 
-        // ইমেজসহ ডিলিট করা
         if ($delete_data->image && File::exists(public_path($delete_data->image))) {
             File::delete(public_path($delete_data->image));
         }

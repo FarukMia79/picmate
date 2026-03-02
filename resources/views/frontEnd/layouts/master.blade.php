@@ -71,7 +71,6 @@
     </head>
 
     <body class="gotop">
-        @php $subtotal = Cart::instance('shopping')->subtotal(); @endphp
         
         <!-- Mobile Menu -->
         <div class="mobile-menu">
@@ -86,7 +85,7 @@
             <ul class="first-nav">
                 @foreach($menucategories as $scategory)
                 <li class="parent-category">
-                    <a href="{{url('category/'.$scategory->slug)}}" class="menu-category-name">
+                    <a href="#" class="menu-category-name">
                         <img src="{{asset($scategory->image)}}" alt="" class="side_cat_img" />
                         {{$scategory->name}}
                     </a>
@@ -98,13 +97,13 @@
                     <ul class="second-nav" style="display: none;">
                         @foreach($scategory->subcategories as $subcategory)
                         <li class="parent-subcategory">
-                            <a href="{{url('subcategory/'.$subcategory->slug)}}" class="menu-subcategory-name">{{$subcategory->subcategoryName}}</a>
+                            <a href="#" class="menu-subcategory-name">{{$subcategory->subcategoryName}}</a>
                             @if($subcategory->childcategories->count() > 0)
                             <span class="menu-subcategory-toggle"><i class="fa fa-chevron-down"></i></span>
                             @endif
                             <ul class="third-nav" style="display: none;">
                                 @foreach($subcategory->childcategories as $childcat)
-                                <li class="childcategory"><a href="{{url('products/'.$childcat->slug)}}" class="menu-childcategory-name">{{$childcat->childcategoryName}}</a></li>
+                                <li class="childcategory"><a href="#" class="menu-childcategory-name">{{$childcat->childcategoryName}}</a></li>
                                 @endforeach
                             </ul>
                         </li>
@@ -129,14 +128,14 @@
                     <div class="menu-bag">
                         <p class="margin-shopping">
                             <i class="fa-solid fa-cart-shopping"></i>
-                            <span class="mobilecart-qty">{{Cart::instance('shopping')->count()}}</span>
+                            <span class="mobilecart-qty">1</span>
                         </p>
                     </div>
                 </div>
             </div>
 
             <div class="mobile-search">
-                <form action="{{route('search')}}">
+                <form action="#">
                     <input type="text" placeholder="Search Product ... " value="" class="msearch_keyword msearch_click" name="keyword" />
                     <button><i data-feather="search"></i></button>
                 </form>
@@ -153,7 +152,7 @@
                                         <a href="{{route('home')}}"><img src="{{asset($generalsetting->white_logo ?? '')}}" alt="Logo" /></a>
                                     </div>
                                     <div class="main-search">
-                                        <form action="{{route('search')}}">
+                                        <form>
                                             <input type="text" placeholder="Search Product..." class="search_keyword search_click" name="keyword" />
                                             <button><i data-feather="search"></i></button>
                                         </form>
@@ -162,7 +161,7 @@
                                     <div class="header-list-items">
                                         <ul>
                                             <li class="track_btn">
-                                                <a href="{{route('customer.order_track')}}"> <i class="fa fa-truck"></i>Track Order</a>
+                                                <a href="#"> <i class="fa fa-truck"></i>Track Order</a>
                                             </li>
                                             @if(Auth::guard('customer')->user())
                                             <li class="for_order">
@@ -180,28 +179,26 @@
                                             @endif
 
                                             <li class="cart-dialog" id="cart-qty">
-                                                <a href="{{route('customer.checkout')}}">
+                                                <a href="#">
                                                     <p class="margin-shopping">
                                                         <i class="fa-solid fa-cart-shopping"></i>
-                                                        <span>{{Cart::instance('shopping')->count()}}</span>
+                                                        <span>1</span>
                                                     </p>
                                                 </a>
                                                 <div class="cshort-summary">
                                                     <ul>
-                                                        @foreach(Cart::instance('shopping')->content() as $key=>$value)
                                                         <li>
-                                                            <a href=""><img src="{{asset($value->options->image)}}" alt="" /></a>
+                                                            <a href=""><img src="" alt="" /></a>
                                                         </li>
-                                                        <li><a href="">{{Str::limit($value->name, 30)}}</a></li>
-                                                        <li>Qty: {{$value->qty}}</li>
+                                                        <li><a href="">খেজুরের চাটনি</a></li>
+                                                        <li>Qty: 1</li>
                                                         <li>
-                                                            <p>৳{{$value->price}}</p>
-                                                            <button class="remove-cart cart_remove" data-id="{{$value->rowId}}"><i data-feather="x"></i></button>
+                                                            <p>৳345</p>
+                                                            <button class="remove-cart cart_remove" data-id=""><i data-feather="x"></i></button>
                                                         </li>
-                                                        @endforeach
                                                     </ul>
-                                                    <p><strong>সর্বমোট : ৳{{$subtotal}}</strong></p>
-                                                    <a href="{{route('customer.checkout')}}" class="go_cart"> অর্ডার করুন </a>
+                                                    <p><strong>সর্বমোট : ৳345</strong></p>
+                                                    <a href="#" class="go_cart"> অর্ডার করুন </a>
                                                 </div>
                                             </li>
                                         </ul>
@@ -220,7 +217,7 @@
                                     <ul>
                                         @foreach ($menucategories as $scategory)
                                         <li class="cat_bar ">
-                                            <a href="{{ url('category/' . $scategory->slug) }}"> 
+                                            <a href="#"> 
                                                 <span class="cat_head">{{ $scategory->name }}</span>
                                                 @if ($scategory->subcategories->count() > 0)
                                                 <i class="fa-solid fa-angle-down cat_down"></i>
@@ -230,7 +227,7 @@
                                             <ul class="Cat_menu">
                                                 @foreach ($scategory->subcategories as $subcat)
                                                 <li class="Cat_list cat_list_hover">
-                                                    <a href="{{ url('subcategory/' . $subcat->slug) }}">
+                                                    <a href="#">
                                                         <span>{{ Str::limit($subcat->subcategoryName, 25) }}</span>
                                                         @if($subcat->childcategories->count() > 0)<i class="fa-solid fa-chevron-right cat_down"></i>@endif
                                                     </a>
@@ -263,17 +260,15 @@
                                     <img src="{{asset($generalsetting->white_logo ?? '')}}" alt="Logo" />
                                 </a>
                                 <p>{{$contact->address ?? ''}}</p>
-                                <a href="tel:{{$contact->hotline ?? ''}}" class="footer-hotlint">{{$contact->hotline ?? ''}}</a>
+                                <a href="tel:017" class="footer-hotlint">017</a>
                             </div>
                         </div>
                         <div class="col-sm-3 col-6">
                             <div class="footer-menu">
                                 <ul>
                                     <li class="title"><a>Useful Link</a></li>
-                                    <li><a href="{{route('contact')}}">Contact Us</a></li>
-                                    @foreach($pages as $page)
-                                    <li><a href="{{route('page',['slug'=>$page->slug])}}">{{$page->name}}</a></li>
-                                    @endforeach
+                                    <li><a href="#">Contact Us</a></li>
+                                    <li><a href="#">Return Policy</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -281,9 +276,7 @@
                             <div class="footer-menu">
                                 <ul>
                                     <li class="title"><a>Link</a></li>
-                                    @foreach($pagesright as $key=>$value)
-                                    <li><a href="{{route('page',['slug'=>$value->slug])}}">{{$value->name}}</a></li>
-                                    @endforeach
+                                    <li><a href="#">Privacy Policy</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -291,11 +284,9 @@
                             <div class="footer-menu">
                                 <ul><li class="title stay_conn"><a>Stay Connected</a></li></ul>
                                 <ul class="social_link">
-                                    @foreach($socialicons as $value)
                                     <li class="social_list">
-                                        <a class="mobile-social-link" href="{{$value->link}}"><i class="{{$value->icon}}"></i></a>
+                                        <a class="mobile-social-link" href="#"><i class="#"></i></a>
                                     </li>
-                                    @endforeach
                                 </ul>
                                 <div class="d_app">
                                     <h2>Download App</h2>
@@ -325,7 +316,7 @@
                 <li><a class="toggle"><span><i class="fa-solid fa-bars"></i></span><span>Category</span></a></li>
                 <li><a href="https://wa.me/8801740015800"><span><i class="fa-solid fa-message"></i></span><span>Message</span></a></li>
                 <li class="mobile_home"><a href="{{route('home')}}"><span><i class="fa-solid fa-home"></i></span> <span>Home</span></a></li>
-                <li><a href="{{route('customer.checkout')}}"><span><i class="fa-solid fa-cart-shopping"></i></span><span>Cart (<b class="mobilecart-qty">{{Cart::instance('shopping')->count()}}</b>)</span></a></li>
+                <li><a href="#"><span><i class="fa-solid fa-cart-shopping"></i></span><span>Cart (<b class="mobilecart-qty">{{Cart::instance('shopping')->count()}}</b>)</span></a></li>
                 @if(Auth::guard('customer')->user())
                 <li><a href="{{route('customer.account')}}"><span><i class="fa-solid fa-user"></i></span><span>Account</span></a></li>
                 @else

@@ -49,17 +49,14 @@ class SubcategoryController extends Controller
             'status' => 'required',
         ]);
 
-        // ইমেজ প্রসেসিং
         $image = $request->file('image');
         if ($image != NULL) {
             $name = time() . '-' . str_replace(' ', '-', $image->getClientOriginalName());
             $name = preg_replace('"\.(jpg|jpeg|png|webp)$"', '.webp', $name);
 
-            // সঠিক পাথ (public/ শব্দটা সরানো হয়েছে)
             $uploadpath = 'uploads/subcategory/';
             $imageUrl = $uploadpath . $name;
 
-            // ফোল্ডার না থাকলে তৈরি করা
             if (!File::isDirectory(public_path($uploadpath))) {
                 File::makeDirectory(public_path($uploadpath), 0777, true, true);
             }
@@ -72,7 +69,6 @@ class SubcategoryController extends Controller
                 $constraint->upsize();
             });
 
-            // public_path() ব্যবহার করে সেভ
             $img->save(public_path($imageUrl));
         } else {
             $imageUrl = NULL;
@@ -81,7 +77,7 @@ class SubcategoryController extends Controller
         $input = $request->all();
         $input['slug'] = strtolower(preg_replace('/\s+/', '-', $request->subcategoryName));
         $input['slug'] = str_replace('/', '', $input['slug']);
-        $input['image'] = $imageUrl; // ডাটাবেসে সেভ হবে 'uploads/subcategory/filename.webp'
+        $input['image'] = $imageUrl; 
 
         Subcategory::create($input);
 
@@ -109,7 +105,6 @@ class SubcategoryController extends Controller
         $image = $request->file('image');
 
         if ($image) {
-            // নতুন ইমেজ প্রসেসিং
             $name = time() . '-' . str_replace(' ', '-', $image->getClientOriginalName());
             $name = preg_replace('"\.(jpg|jpeg|png|webp)$"', '.webp', $name);
 
@@ -126,7 +121,6 @@ class SubcategoryController extends Controller
 
             $img->save(public_path($imageUrl));
 
-            // পুরনো ফাইল ডিলিট করা
             if ($update_data->image && File::exists(public_path($update_data->image))) {
                 File::delete(public_path($update_data->image));
             }
@@ -168,7 +162,6 @@ class SubcategoryController extends Controller
     {
         $delete_data = Subcategory::find($request->hidden_id);
 
-        // ছবিসহ ডিলিট করা
         if ($delete_data->image && File::exists(public_path($delete_data->image))) {
             File::delete(public_path($delete_data->image));
         }

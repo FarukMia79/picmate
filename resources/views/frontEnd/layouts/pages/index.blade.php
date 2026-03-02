@@ -90,12 +90,12 @@
                     @foreach ($menucategories as $key => $value)
                         <div class="cat_item">
                             <div class="cat_img">
-                                <a href="{{ route('category', $value->slug) }}">
+                                <a href="#">
                                     <img src="{{ asset($value->image) }}" alt="" />
                                 </a>
                             </div>
                             <div class="cat_name">
-                                <a href="{{ route('category', $value->slug) }}">
+                                <a href="#">
                                     {{ $value->name }}
                                 </a>
                             </div>
@@ -144,7 +144,7 @@
                                 </div>
                                 @endif
                                 <div class="pro_img">
-                                    <a href="{{ route('product', $value->slug) }}">
+                                    <a href="#">
                                         <img src="{{ asset($value->image ? $value->image->image : '') }}"
                                             alt="{{ $value->name }}" />
                                     </a>
@@ -152,7 +152,7 @@
                                 <div class="pro_des">
                                     <div class="pro_name">
                                         <a
-                                            href="{{ route('product', $value->slug) }}">{{ Str::limit($value->name, 80) }}</a>
+                                            href="#">{{ Str::limit($value->name, 80) }}</a>
                                     </div>
                                     <div class="pro_price">
                                         <p>
@@ -171,14 +171,14 @@
                                 <div class="pro_btn">
                                    
                                     <div class="cart_btn order_button">
-                                        <a href="{{ route('product', $value->slug) }}"
+                                        <a href="#"
                                             class="addcartbutton">অর্ডার করুন </a>
                                     </div>
                                 </div>
                             @else
                                 <div class="pro_btn">
                                     
-                                    <form action="{{ route('cart.store') }}" method="POST">
+                                    <form>
                                         @csrf
                                         <input type="hidden" name="id" value="{{ $value->id }}" />
                                         <input type="hidden" name="qty" value="1" />
@@ -227,7 +227,7 @@
                                 </div>
                                 @endif
                                 <div class="pro_img">
-                                    <a href="{{ route('product', $value->slug) }}">
+                                    <a href="#">
                                         <img src="{{ asset($value->image ? $value->image->image : '') }}"
                                             alt="{{ $value->name }}" />
                                     </a>
@@ -235,7 +235,7 @@
                                 <div class="pro_des">
                                     <div class="pro_name">
                                         <a
-                                            href="{{ route('product', $value->slug) }}">{{ Str::limit($value->name, 80) }}</a>
+                                            href="#">{{ Str::limit($value->name, 80) }}</a>
                                     </div>
                                     <div class="pro_price">
                                         <p>
@@ -254,14 +254,14 @@
                                 <div class="pro_btn">
                                    
                                     <div class="cart_btn order_button">
-                                        <a href="{{ route('product', $value->slug) }}"
+                                        <a href="#"
                                             class="addcartbutton">অর্ডার করুন </a>
                                     </div>
                                 </div>
                             @else
                                 <div class="pro_btn">
                                     
-                                    <form action="{{ route('cart.store') }}" method="POST">
+                                    <form>
                                         @csrf
                                         <input type="hidden" name="id" value="{{ $value->id }}" />
                                         <input type="hidden" name="qty" value="1" />
@@ -275,7 +275,7 @@
                 </div>
                 <div class="col-sm-12">
                     <div class="show_more_btn">
-                        <a href="{{ route('category', $homecat->slug) }}" class="view_more_btn">View More</a>
+                        <a href="#" class="view_more_btn">View More</a>
                     </div>
                 </div>
             </div>

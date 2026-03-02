@@ -7,7 +7,7 @@
             <div class="col-sm-3">
                 <ul>
                     <li><a href="{{route('customer.account')}}" class="m-2 btn btn-primary {{request()->is('customer/account')?'active':''}}"><i data-feather="user"></i> My Account</a></li>
-                    <li><a href="{{route('customer.orders')}}" class="m-2 btn btn-primary {{request()->is('customer/orders')?'active':''}}"><i data-feather="database"></i> My Order</a></li>
+                    <li><a href="#" class="m-2 btn btn-primary {{request()->is('customer/orders')?'active':''}}"><i data-feather="database"></i> My Order</a></li>
                     <li><a href="{{route('customer.profile_edit')}}" class="m-2 btn btn-primary {{request()->is('customer/profile-edit')?'active':''}}"><i data-feather="edit"></i> Profile Edit</a></li>
                     <li><a href="{{route('customer.change_pass')}}" class="m-2 btn btn-primary {{request()->is('customer/change-password')?'active':''}}"><i data-feather="lock"></i> Change Password</a></li>
                     <li><a class="m-2 btn btn-primary" href="{{ route('customer.logout') }}"
