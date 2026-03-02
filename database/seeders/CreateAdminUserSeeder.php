@@ -21,11 +21,10 @@ class CreateAdminUserSeeder extends Seeder
             'name' => 'Hardik Savani',
             'email' => 'admin@gmail.com',
             'password' => bcrypt('123456'),
-            'image' => 'default.png', // এই লাইনটি যোগ করুন
-            'status' => 1            // এই লাইনটিও যোগ করুন
+            'image' => 'default.png', 
+            'status' => 1 
         ]);
 
-        // রোল তৈরি বা খুঁজে নেওয়া (যাতে এরর না আসে)
         $role = Role::firstOrCreate(['name' => 'Admin']);
 
         $permissions = Permission::pluck('id', 'id')->all();
