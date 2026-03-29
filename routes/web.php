@@ -70,6 +70,8 @@ Route::group(['prefix' => 'customer', 'namespace' => 'Frontend', 'middleware' =>
 Route::group(['prefix' => 'customer', 'namespace' => 'Frontend', 'middleware' => ['customer', 'ipcheck', 'check_refer']], function () {
 
     Route::get('/account', [CustomerController::class, 'account'])->name('customer.account');
+    Route::get('/orders', [CustomerController::class, 'orders'])->name('customer.orders');
+    Route::get('/invoice', [CustomerController::class, 'invoice'])->name('customer.invoice');
     Route::get('/profile-edit', [CustomerController::class, 'profile_edit'])->name('customer.profile_edit');
     Route::post('/profile-update', [CustomerController::class, 'profile_update'])->name('customer.profile_update');
     Route::get('/change-password', [CustomerController::class, 'change_pass'])->name('customer.change_pass');

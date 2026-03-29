@@ -200,6 +200,12 @@ class CustomerController extends Controller
         return redirect('customer/order-success/' . $order->id);
     }
 
+    public function orders()
+    {
+        $orders = Order::where('customer_id', Auth::guard('customer')->user()->id)->with('status')->latest()->get();
+        return view('frontEnd.layouts.customer.orders', compact('orders'));
+    }
+
     public function order_success($id)
     {
         $order = Order::where('id', $id)->firstOrFail();
