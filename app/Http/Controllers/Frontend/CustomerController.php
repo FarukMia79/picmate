@@ -7,11 +7,21 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Brian2694\Toastr\Facades\Toastr;
 use Intervention\Image\Facades\Image;
+use App\Models\Order;
+use App\Models\OrderDetails;
+use App\Models\Payment;
+use App\Models\Shipping;
 use App\Models\Customer;
 use App\Models\District;
+use App\Models\ShippingCharge;
+use App\Models\PaymentGateway;
+use App\Models\SmsGateway;
+use App\Models\GeneralSetting;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Session;
+use Gloudemans\Shoppingcart\Facades\Cart;
 
 class CustomerController extends Controller
 {
@@ -86,6 +96,114 @@ class CustomerController extends Controller
         Auth::guard('customer')->logout();
         Toastr::success('You are logout successfully', 'success!');
         return redirect()->route('customer.login');
+    }
+
+    public function checkout()
+    {
+        $shippingcharge = ShippingCharge::where('status', 1)->get();
+        $select_charge = ShippingCharge::where('status', 1)->first();
+        $bkash_gateway = PaymentGateway::where(['status' => 1, 'type' => 'bkash'])->first();
+        $shurjopay_gateway = PaymentGateway::where(['status' => 1, 'type' => 'shurjopay'])->first();
+        Session::put('shipping', $select_charge->amount);
+        return view('frontEnd.layouts.customer.checkout', compact('shippingcharge', 'bkash_gateway', 'shurjopay_gateway'));
+    }
+
+    public function order_save(Request $request)
+    {
+        $this->validate($request, [
+            'name' => 'required',
+            'phone' => 'required',
+            'address' => 'required',
+            'area' => 'required',
+        ]);
+        if (Cart::instance('shopping')->count() <= 0) {
+            Toastr::error('Your shopping empty', 'Failed!');
+            return redirect()->back();
+        }
+
+        $subtotal = Cart::instance('shopping')->subtotal();
+        $subtotal = str_replace(',', '', $subtotal);
+        $subtotal = str_replace('.00', '', $subtotal);
+        $discount = Session::get('discount');
+
+        $shippingfee  = Session::get('shipping');
+        $shipping_area  = ShippingCharge::where('id', $request->area)->first();
+        if (Auth::guard('customer')->user()) {
+            $customer_id = Auth::guard('customer')->user()->id;
+        } else {
+            $exits_customer = Customer::where('phone', $request->phone)->select('phone', 'id')->first();
+            if ($exits_customer) {
+                $customer_id = $exits_customer->id;
+            } else {
+                $password = rand(111111, 999999);
+                $store              = new Customer();
+                $store->name        = $request->name;
+                $store->slug        = $request->name;
+                $store->phone       = $request->phone;
+                $store->password    = bcrypt($password);
+                $store->verify      = 1;
+                $store->status      = 'active';
+                $store->save();
+                $customer_id = $store->id;
+            }
+        }
+
+        // order data save
+        $order                   = new Order();
+        $order->invoice_id       = rand(11111, 99999);
+        $order->amount           = ($subtotal + $shippingfee) - $discount;
+        $order->discount         = $discount ? $discount : 0;
+        $order->shipping_charge  = $shippingfee;
+        $order->customer_id      =  $customer_id;
+        $order->order_status     = 1;
+        $order->note             = $request->note;
+        $order->save();
+
+        // shipping data save
+        $shipping              =   new Shipping();
+        $shipping->order_id    =   $order->id;
+        $shipping->customer_id =   $customer_id;
+        $shipping->name        =   $request->name;
+        $shipping->phone       =   $request->phone;
+        $shipping->address     =   $request->address;
+        $shipping->area        =   $shipping_area->name;
+        $shipping->save();
+
+        // payment data save
+        $payment                 = new Payment();
+        $payment->order_id       = $order->id;
+        $payment->customer_id    = $customer_id;
+        $payment->payment_method = $request->payment_method;
+        $payment->amount         = $order->amount;
+        $payment->payment_status = 'pending';
+        $payment->save();
+
+        // order details data save
+        foreach (Cart::instance('shopping')->content() as $cart) {
+            $order_details                  =   new OrderDetails();
+            $order_details->order_id        =   $order->id;
+            $order_details->product_id      =   $cart->id;
+            $order_details->product_name    =   $cart->name;
+            $order_details->purchase_price  =   $cart->options->purchase_price;
+            $order_details->product_color   =   $cart->options->product_color;
+            $order_details->product_size    =   $cart->options->product_size;
+            $order_details->sale_price      =   $cart->price;
+            $order_details->qty             =   $cart->qty;
+            $order_details->save();
+        }
+
+        Cart::instance('shopping')->destroy();
+
+        Toastr::success('Thanks, Your order place successfully', 'Success!');
+        $site_setting = GeneralSetting::where('status', 1)->first();
+
+        return redirect('customer/order-success/' . $order->id);
+    }
+
+    public function order_success($id)
+    {
+        $order = Order::where('id', $id)->firstOrFail();
+        return view('frontEnd.layouts.customer.order_success', compact('order'));
     }
 
 

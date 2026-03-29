@@ -144,7 +144,7 @@
                                 </div>
                                 @endif
                                 <div class="pro_img">
-                                    <a href="#">
+                                    <a href="{{ route('product', $value->slug) }}">
                                         <img src="{{ asset($value->image ? $value->image->image : '') }}"
                                             alt="{{ $value->name }}" />
                                     </a>
@@ -152,7 +152,7 @@
                                 <div class="pro_des">
                                     <div class="pro_name">
                                         <a
-                                            href="#">{{ Str::limit($value->name, 80) }}</a>
+                                            href="{{ route('product', $value->slug) }}">{{ Str::limit($value->name, 80) }}</a>
                                     </div>
                                     <div class="pro_price">
                                         <p>
@@ -171,14 +171,14 @@
                                 <div class="pro_btn">
                                    
                                     <div class="cart_btn order_button">
-                                        <a href="#"
+                                        <a href="{{ route('product', $value->slug) }}"
                                             class="addcartbutton">অর্ডার করুন </a>
                                     </div>
                                 </div>
                             @else
                                 <div class="pro_btn">
                                     
-                                    <form>
+                                    <form action="{{ route('cart.store') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="id" value="{{ $value->id }}" />
                                         <input type="hidden" name="qty" value="1" />

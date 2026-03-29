@@ -46,9 +46,15 @@ Route::group(['namespace' => 'Frontend', 'middleware' => ['ipcheck', 'check_refe
     Route::get('hot-deals', [FrontendController::class, 'hotdeals'])->name('hotdeals');
     Route::get('product/{id}', [FrontendController::class, 'details'])->name('product');
     Route::get('quick-view', [FrontendController::class, 'quickview'])->name('quickview');
+    Route::get('/shipping-charge', [FrontendController::class, 'shipping_charge'])->name('shipping.charge');
     Route::get('site/contact-us', [FrontendController::class, 'contact'])->name('contact');
     Route::get('districts', [FrontendController::class, 'districts'])->name('districts');
+
+    // cart route
+    Route::post('cart/store', [ShoppingController::class, 'cart_store'])->name('cart.store');
 });
+
+
 
 Route::group(['prefix' => 'customer', 'namespace' => 'Frontend', 'middleware' => ['ipcheck', 'check_refer']], function () {
     Route::get('/login', [CustomerController::class, 'login'])->name('customer.login');
@@ -56,6 +62,9 @@ Route::group(['prefix' => 'customer', 'namespace' => 'Frontend', 'middleware' =>
     Route::get('/register', [CustomerController::class, 'register'])->name('customer.register');
     Route::post('/store', [CustomerController::class, 'store'])->name('customer.store');
     Route::post('/logout', [CustomerController::class, 'logout'])->name('customer.logout');
+    Route::get('/checkout', [CustomerController::class, 'checkout'])->name('customer.checkout');
+    Route::post('/order-save', [CustomerController::class, 'order_save'])->name('customer.ordersave');
+    Route::get('/order-success/{id}', [CustomerController::class, 'order_success'])->name('customer.order_success');
 });
 // customer auth
 Route::group(['prefix' => 'customer', 'namespace' => 'Frontend', 'middleware' => ['customer', 'ipcheck', 'check_refer']], function () {

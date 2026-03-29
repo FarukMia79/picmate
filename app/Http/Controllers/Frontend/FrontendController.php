@@ -5,9 +5,15 @@ namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Category;
+use App\Models\Subcategory;
+use App\Models\Childcategory;
 use App\Models\Product;
 use App\Models\District;
+use App\Models\ShippingCharge;
+use App\Models\Productcolor;
+use App\Models\Productsize;
 use App\Models\Banner;
+use App\Models\Review;
 
 class FrontendController extends Controller
 {
@@ -56,6 +62,71 @@ class FrontendController extends Controller
             });
         // return $homeproducts;
         return view('frontEnd.layouts.pages.index', compact('sliders', 'frontcategory', 'hotdeal_top', 'hotdeal_bottom', 'homeproducts', 'sliderbottomads', 'footertopads'));
+    }
+
+    public function products($slug, Request $request)
+    {
+        $childcategory = Childcategory::where(['slug' => $slug, 'status' => 1])->first();
+        $childcategories = Childcategory::where('subcategory_id', $childcategory->subcategory_id)->get();
+        $products = Product::where(['status' => 1, 'childcategory_id' => $childcategory->id])->with('category')
+            ->select('id', 'name', 'slug', 'new_price', 'old_price', 'category_id', 'subcategory_id', 'childcategory_id');
+
+
+        // return $request->sort;
+        if ($request->sort == 1) {
+            $products = $products->orderBy('created_at', 'desc');
+        } elseif ($request->sort == 2) {
+            $products = $products->orderBy('created_at', 'asc');
+        } elseif ($request->sort == 3) {
+            $products = $products->orderBy('new_price', 'desc');
+        } elseif ($request->sort == 4) {
+            $products = $products->orderBy('new_price', 'asc');
+        } elseif ($request->sort == 5) {
+            $products = $products->orderBy('name', 'asc');
+        } elseif ($request->sort == 6) {
+            $products = $products->orderBy('name', 'desc');
+        } else {
+            $products = $products->latest();
+        }
+
+        $min_price = $products->min('new_price');
+        $max_price = $products->max('new_price');
+        if ($request->min_price && $request->max_price) {
+            $products = $products->where('new_price', '>=', $request->min_price);
+            $products = $products->where('new_price', '<=', $request->max_price);
+        }
+
+        $products = $products->paginate(24);
+        // return $products;
+        $impproducts = Product::where(['status' => 1, 'topsale' => 1])
+            ->with('image')
+            ->limit(6)
+            ->select('id', 'name', 'slug')
+            ->get();
+
+        return view('frontEnd.layouts.pages.childcategory', compact('childcategory', 'products', 'impproducts', 'min_price', 'max_price', 'childcategories'));
+    }
+
+    public function details($slug)
+    {
+        $details = Product::where(['slug' => $slug, 'status' => 1])
+            ->with('image', 'images', 'category', 'subcategory', 'childcategory')
+            ->firstOrFail();
+        $products = Product::where(['category_id' => $details->category_id, 'status' => 1])
+            ->with('image')
+            ->select('id', 'name', 'slug', 'new_price', 'old_price')
+            ->get();
+        $shippingcharge = ShippingCharge::where('status', 1)->get();
+        $reviews = Review::where('product_id', $details->id)->get();
+        $productcolors = Productcolor::where('product_id', $details->id)
+            ->with('color')
+            ->get();
+        // return $productcolors;
+        $productsizes = Productsize::where('product_id', $details->id)
+            ->with('size')
+            ->get();
+
+        return view('frontEnd.layouts.pages.details', compact('details', 'products', 'shippingcharge', 'productcolors', 'productsizes', 'reviews'));
     }
 
     public function hotdeals()
